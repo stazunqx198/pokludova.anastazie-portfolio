@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dokumenty - Anastázie Pokludová</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2a4365 0%, #3d5a80 50%, #2a4365 100%);
+            color: #f0f4f8;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .back-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #00d9ff, #00ffcc);
+            color: #1a2942;
+            padding: 0.8rem 1.5rem;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-bottom: 3rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(0, 217, 255, 0.3);
+        }
+
+        .back-button:hover {
+            background: linear-gradient(135deg, #00ffcc, #00d9ff);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 217, 255, 0.5);
+        }
+
+        h1 {
+            font-size: 3rem;
+            background: linear-gradient(135deg, #00d9ff, #ff69b4, #00ffcc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .intro {
+            text-align: center;
+            margin-bottom: 3rem;
+            color: #d0e0f0;
+            font-size: 1.1rem;
+        }
+
+        h2 {
+            font-size: 2rem;
+            background: linear-gradient(135deg, #00d9ff, #ba55d3);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 3rem 0 2rem 0;
+            text-align: center;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .gallery-item {
+            background: rgba(61, 90, 128, 0.3);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 2px solid rgba(0, 217, 255, 0.3);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(8px);
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.05) rotate(1deg);
+            box-shadow: 0 15px 40px rgba(0, 217, 255, 0.4), 0 10px 30px rgba(255, 105, 180, 0.3);
+            border-color: rgba(255, 105, 180, 0.6);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            cursor: pointer;
+        }
+
+        .gallery-caption {
+            padding: 1rem;
+            text-align: center;
+            color: #00d9ff;
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .gallery {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Modal/Lightbox for zoomed images */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.95);
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            max-width: 90vw;
+            max-height: 90vh;
+            animation: zoomIn 0.3s ease;
+        }
+
+        @keyframes zoomIn {
+            from { transform: translate(-50%, -50%) scale(0.8); }
+            to { transform: translate(-50%, -50%) scale(1); }
+        }
+
+        .modal-content img {
+            max-width: 100%;
+            max-height: 90vh;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            border-radius: 10px;
+            box-shadow: 0 0 50px rgba(0, 217, 255, 0.5);
+            display: block;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 40px;
+            color: #00d9ff;
+            font-size: 50px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-shadow: 0 0 10px rgba(0, 217, 255, 0.8);
+        }
+
+        .close-modal:hover {
+            color: #ff69b4;
+            text-shadow: 0 0 20px rgba(255, 105, 180, 0.8);
+            transform: scale(1.2);
+        }
+
+        .modal-caption {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #00d9ff;
+            font-size: 1.2rem;
+            background: rgba(42, 67, 101, 0.9);
+            padding: 1rem 2rem;
+            border-radius: 30px;
+            backdrop-filter: blur(10px);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-button">← Zpět na portfolio</a>
+        
+        <h1>Dokumenty a osvědčení</h1>
+        
+        <p class="intro">
+            Oficiální dokumenty, pochvaly, potvrzení a vysvědčení
+        </p>
+
+        <h2>Pochvaly a potvrzení</h2>
+        
+        <div class="gallery">
+            <div class="gallery-item">
+                <img src="obrazky/dokument1.jpg" alt="Pochvala třídního učitele">
+                <div class="gallery-caption">Pochvala třídního učitele</div>
+            </div>
+            <div class="gallery-item">
+                <img src="obrazky/dokument2.jpg" alt="Pochvala třídního učitele">
+                <div class="gallery-caption">Pochvala třídního učitele</div>
+            </div>
+            <div class="gallery-item">
+                <img src="obrazky/dokument3.jpg" alt="Pochvala třídního učitele">
+                <div class="gallery-caption">Pochvala třídního učitele</div>
+            </div>
+            <div class="gallery-item">
+                <img src="obrazky/dokument4.jpg" alt="Dabování textů k sochám">
+                <div class="gallery-caption">Dabování textů k sochám</div>
+            </div>
+            <div class="gallery-item">
+                <img src="obrazky/dokument5.jpg" alt="Účast s parlamentem">
+                <div class="gallery-caption">Účast s parlamentem</div>
+            </div>
+            <div class="gallery-item">
+                <img src="obrazky/dokument6.jpg" alt="Výpis z vysvědčení">
+                <div class="gallery-caption">Výpis z vysvědčení</div>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 4rem;">
+            <a href="index.html" class="back-button">← Zpět na portfolio</a>
+        </div>
+    </div>
+
+    <!-- Modal for zoomed images -->
+    <div id="imageModal" class="modal">
+        <span class="close-modal">&times;</span>
+        <div class="modal-content">
+            <img id="modalImage" src="" alt="">
+        </div>
+        <div class="modal-caption" id="modalCaption"></div>
+    </div>
+
+    <script>
+        // Image zoom modal functionality
+        const modal = document.getElementById('imageModal');
+        const modalImg = document.getElementById('modalImage');
+        const modalCaption = document.getElementById('modalCaption');
+        const closeBtn = document.querySelector('.close-modal');
+
+        // Add click event to all gallery images
+        document.querySelectorAll('.gallery-item img').forEach(img => {
+            img.addEventListener('click', function(e) {
+                e.stopPropagation();
+                modal.style.display = 'block';
+                modalImg.src = this.src;
+                modalCaption.textContent = this.alt;
+                document.body.style.overflow = 'hidden';
+            });
+        });
+
+        // Close modal when clicking X
+        closeBtn.addEventListener('click', function() {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        });
+
+        // Close modal when clicking outside image
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && modal.style.display === 'block') {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        });
+    </script>
+</body>
+</html>
